@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Lora;font-style:normal;font-weight:400;src:url(node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2)}
+@font-face{font-family:Lora;font-style:normal;font-weight:600;src:url(node_modules/@fontsource/lora/files/lora-latin-600-normal.woff2)}
+@font-face{font-family:Lora;font-style:italic;font-weight:400;src:url(node_modules/@fontsource/lora/files/lora-latin-400-italic.woff2)}
+@font-face{font-family:Lora;font-style:italic;font-weight:600;src:url(node_modules/@fontsource/lora/files/lora-latin-600-italic.woff2)}
+@font-face{font-family:DM;font-weight:400;src:url(node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2)}
+@font-face{font-family:DM;font-weight:700;src:url(node_modules/@fontsource/dm-sans/files/dm-sans-latin-700-normal.woff2)}
+:root{--bx:#4a1622;--bx2:#2a0b12;--or:#c9a96e;--or2:#e8d5b0;--cr:#f6efe3;--cr2:#ece2d0;--ink:#3a1a20}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bx2)}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;
+  background:radial-gradient(900px 900px at 78% 30%,rgba(232,180,110,.28),transparent 60%),
+             radial-gradient(1200px 1000px at 30% 110%,#5a1b29,transparent 70%),
+             linear-gradient(180deg,#2a0b12,#3a1019 60%,#2a0b12)}
+#glow{position:absolute;left:640px;top:180px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,214,150,.35),rgba(255,214,150,0) 70%)}
+.star{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--or2)}
+#mark{position:absolute;top:250px;left:0;right:0;text-align:center;font:italic 400 34px Lora;color:var(--or);letter-spacing:.5px;z-index:50}
+#big{position:absolute;left:90px;right:90px;top:620px;text-align:center;z-index:40}
+#big div{font:600 92px/1.12 Lora;color:var(--cr);opacity:0;margin-bottom:22px}
+#big div.gold{color:var(--or2);font-style:italic}
+#cap{position:absolute;left:70px;right:70px;top:1330px;display:flex;justify-content:center;z-index:45}
+#cap span{display:inline-block;background:rgba(42,11,18,.88);border:2px solid rgba(201,169,110,.55);border-radius:28px;
+  padding:26px 38px;font:700 52px/1.22 DM;color:var(--cr);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+#cap b{color:var(--or2);font-weight:700}
+/* livret */
+#holder{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:20;transform-origin:540px 900px}
+#book{position:absolute;left:250px;top:400px;width:580px;height:820px;perspective:2600px}
+.leaf{position:absolute;inset:0;transform-origin:0 50%;transform-style:preserve-3d}
+.face{position:absolute;inset:0;border-radius:6px 14px 14px 6px;backface-visibility:hidden;overflow:hidden;
+  background:linear-gradient(90deg,#e6dccb 0,#f8f2e7 5%,#f6efe3 100%);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.back{transform:rotateY(180deg);background:linear-gradient(270deg,#e6dccb 0,#f3ecdf 6%,#efe6d6 100%)}
+.shade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+.pg{padding:56px 52px;color:var(--ink);font-family:DM}
+.pg h3{font:600 46px/1.15 Lora;color:var(--bx);margin-bottom:10px}
+.pg .k{font:italic 400 26px Lora;color:#8a6a3a;margin-bottom:30px}
+.pg .num{position:absolute;bottom:26px;right:40px;font:italic 400 22px Lora;color:#a08a6a}
+.pg .ft{position:absolute;bottom:26px;left:52px;font:italic 400 20px Lora;color:#a08a6a}
+.rule{height:2px;background:var(--or);width:90px;margin:0 0 26px}
+.line{height:2px;background:#d9cbb3;margin:30px 0 0}
+.cover{background:linear-gradient(160deg,#5a1b29,#3d111b)!important;color:var(--cr);text-align:center}
+.cover .fr{position:absolute;inset:26px;border:2px solid var(--or);border-radius:8px}
+.cover .fr2{position:absolute;inset:36px;border:1px solid rgba(201,169,110,.5);border-radius:6px}
+.wx{display:flex;gap:16px;margin:8px 0 24px}
+.wx div{flex:1;height:110px;border:2px solid #d9cbb3;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.lbl{font:600 22px DM;color:var(--bx);margin-top:16px}
+.cols{display:flex;gap:18px}
+.cols>div{flex:1;border:2px solid #d9cbb3;border-radius:16px;padding:16px;min-height:430px}
+.cols h4{font:600 24px Lora;color:var(--bx);margin-bottom:6px}
+.chk{display:flex;align-items:center;gap:12px;margin-top:24px}
+.chk i{width:24px;height:24px;border:2px solid var(--or);border-radius:6px;flex:none}
+.chk s{flex:1;height:2px;background:#d9cbb3;text-decoration:none}
+.sos{border:3px dashed var(--or);border-radius:20px;padding:26px;margin-top:10px;background:#fbf6ee}
+.sos .t{font:600 34px Lora;color:var(--bx);margin-bottom:6px}
+.sos .q{font:400 22px DM;color:#6a4a40;margin-top:22px}
+#stamp{position:absolute;left:560px;top:420px;width:250px;height:250px;border-radius:50%;z-index:30;
+  background:radial-gradient(circle,#d9b97c,#b8915a);display:flex;align-items:center;justify-content:center;
+  font:italic 600 54px Lora;color:#3d111b;box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;border:4px solid #f0dcb0}
+#end{position:absolute;inset:0;z-index:60;opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(800px 800px at 50% 45%,#5a1b29,#2a0b12)}
+#end .n{font:italic 400 72px/1.2 Lora;color:var(--or2);text-align:center;margin-top:30px}
+#end .s{font:400 34px DM;color:var(--cr2);margin-top:26px;text-align:center;opacity:.85}
+</style></head><body>
+<div id="stage">
+  <div id="glow"></div>
+  <div id="stars"></div>
+  <div id="mark">H·R Écoute &amp; Accompagnement</div>
+  <div id="big"></div>
+
+  <div id="holder">
+    <div id="book"></div>
+    <svg id="hands" width="1080" height="1920" style="position:absolute;left:0;top:0;pointer-events:none;z-index:25">
+      <defs>
+        <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0c7a4"/><stop offset="1" stop-color="#d9a07c"/></linearGradient>
+        <linearGradient id="knit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9dcc6"/><stop offset="1" stop-color="#cdbb9e"/></linearGradient>
+        <pattern id="rib" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)"><rect width="18" height="18" fill="url(#knit)"/><rect width="5" height="18" fill="rgba(120,90,60,.12)"/></pattern>
+      </defs>
+      <!-- main gauche -->
+      <g>
+        <path d="M110 1920 L 205 1330 Q 215 1270 270 1255 L 330 1250 Q 380 1260 380 1310 L 300 1920 Z" fill="url(#rib)"/>
+        <path d="M205 1320 Q 200 1230 250 1170 L 300 1130 Q 330 1115 345 1140 L 360 1250 Q 300 1300 205 1320Z" fill="url(#skin)"/>
+        <path d="M262 1200 Q 255 1130 290 1100 Q 320 1080 330 1110 L 318 1190 Z" fill="url(#skin)" stroke="#c48a68" stroke-width="2"/>
+        <path d="M296 1090 Q 312 1058 340 1050 Q 368 1046 372 1068 Q 370 1094 330 1112 Z" fill="#f2cdb0" stroke="#c48a68" stroke-width="2"/>
+        <ellipse cx="352" cy="1066" rx="13" ry="9" fill="#f7ddd0" opacity=".8"/>
+      </g>
+      <!-- main droite -->
+      <g>
+        <path d="M970 1920 L 875 1330 Q 865 1270 810 1255 L 750 1250 Q 700 1260 700 1310 L 780 1920 Z" fill="url(#rib)"/>
+        <path d="M875 1320 Q 880 1230 830 1170 L 780 1130 Q 750 1115 735 1140 L 720 1250 Q 780 1300 875 1320Z" fill="url(#skin)"/>
+        <path d="M818 1200 Q 825 1130 790 1100 Q 760 1080 750 1110 L 762 1190 Z" fill="url(#skin)" stroke="#c48a68" stroke-width="2"/>
+        <path d="M784 1090 Q 768 1058 740 1050 Q 712 1046 708 1068 Q 710 1094 750 1112 Z" fill="#f2cdb0" stroke="#c48a68" stroke-width="2"/>
+        <ellipse cx="728" cy="1066" rx="13" ry="9" fill="#f7ddd0" opacity=".8"/>
+      </g>
+    </svg>
+  </div>
+  <div id="stamp">Offert</div>
+  <div id="cap"><span></span></div>
+
+  <div id="end">
+    <svg id="bfly" width="300" height="230" viewBox="-150 -115 300 230"></svg>
+    <div class="n">H·R Écoute<br>&amp; Accompagnement</div>
+    <div class="s">Ton guide du soir, offert.<br>Lien en bio.</div>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const butterfly=(c)=>`<g fill="${c}">
+ <path d="M-6 -10 C -40 -95 -140 -90 -128 -30 C -120 8 -60 12 -8 2 Z"/>
+ <path d="M6 -10 C 40 -95 140 -90 128 -30 C 120 8 60 12 8 2 Z"/>
+ <path d="M-8 6 C -60 14 -110 60 -80 90 C -55 110 -20 70 -6 22 Z" opacity=".85"/>
+ <path d="M8 6 C 60 14 110 60 80 90 C 55 110 20 70 6 22 Z" opacity=".85"/>
+ <ellipse cx="0" cy="8" rx="7" ry="44"/>
+ <path d="M-3 -34 Q -18 -70 -34 -80 M3 -34 Q 18 -70 34 -80" stroke="${c}" stroke-width="4" fill="none"/></g>`;
+$('#bfly').innerHTML=butterfly('#c9a96e');
+
+// étoiles
+let st='';for(let i=0;i<34;i++){const x=(i*397)%1060+10,y=(i*211)%560+40;st+=`<div class="star" style="left:${x}px;top:${y}px;opacity:${.25+((i*7)%10)/20}"></div>`}
+$('#stars').innerHTML=st;
+
+const sun=`<svg width="60" height="60" viewBox="-30 -30 60 60"><circle r="12" fill="#e0a055"/>${[...Array(8)].map((_,i)=>`<line x1="0" y1="-19" x2="0" y2="-27" stroke="#e0a055" stroke-width="4" stroke-linecap="round" transform="rotate(${i*45})"/>`).join('')}</svg>`;
+const cloud=`<svg width="70" height="50" viewBox="0 0 70 50"><path d="M15 42 Q2 42 4 30 Q6 20 18 21 Q22 6 38 8 Q52 10 54 24 Q68 24 66 36 Q64 42 55 42 Z" fill="#b9a993"/></svg>`;
+const rain=`<svg width="70" height="64" viewBox="0 0 70 64"><path d="M15 34 Q2 34 4 22 Q6 12 18 13 Q22 0 38 2 Q52 4 54 16 Q68 16 66 28 Q64 34 55 34 Z" fill="#8f7f6c"/><path d="M20 42 l-4 12 M35 42 l-4 12 M50 42 l-4 12" stroke="#7a9ab8" stroke-width="4" stroke-linecap="round"/></svg>`;
+const storm=`<svg width="70" height="64" viewBox="0 0 70 64"><path d="M15 34 Q2 34 4 22 Q6 12 18 13 Q22 0 38 2 Q52 4 54 16 Q68 16 66 28 Q64 34 55 34 Z" fill="#6e6052"/><path d="M36 36 l-8 12 h8 l-6 12" stroke="#e0a055" stroke-width="4" fill="none" stroke-linejoin="round"/></svg>`;
+const lines=n=>Array(n).fill('<div class="line"></div>').join('');
+const chk=n=>Array(n).fill('<div class="chk"><i></i><s></s></div>').join('');
+function mandala(){let s='<svg width="440" height="440" viewBox="-220 -220 440 440" style="display:block;margin:6px auto 0" fill="none" stroke="#4a1622" stroke-width="2.2">';
+ s+='<circle r="210"/><circle r="170"/><circle r="40"/><circle r="18"/>';
+ for(let i=0;i<16;i++){const a=i*22.5;s+=`<g transform="rotate(${a})"><path d="M0 -40 C 26 -80 26 -130 0 -168 C -26 -130 -26 -80 0 -40Z"/><path d="M0 -70 C 12 -95 12 -120 0 -140 C -12 -120 -12 -95 0 -70Z"/><circle cy="-190" r="12"/></g>`}
+ for(let i=0;i<16;i++){s+=`<g transform="rotate(${i*22.5+11.25})"><path d="M0 -150 Q 30 -170 0 -205 Q -30 -170 0 -150Z"/></g>`}
+ // quelques zones déjà coloriées
+ for(let i=0;i<5;i++){s+=`<g transform="rotate(${i*22.5})"><path d="M0 -40 C 26 -80 26 -130 0 -168 C -26 -130 -26 -80 0 -40Z" fill="${['#c9a96e','#e8b8a0','#c9a96e','#d99a8a','#e8d5b0'][i]}" opacity=".8"/></g>`}
+ return s+'</svg>'}
+
+const pages=[
+`<div class="face cover"><div class="fr"></div><div class="fr2"></div>
+  <div style="padding-top:120px"><svg width="90" height="90" viewBox="-45 -45 90 90"><path d="M10 -36 A 36 36 0 1 0 30 20 A 28 28 0 1 1 10 -36Z" fill="#e8d5b0"/></svg></div>
+  <div style="font:italic 400 30px Lora;color:#c9a96e;margin-top:26px">Guide offert</div>
+  <div style="font:600 64px/1.12 Lora;margin:20px 50px 0">Quand ta tête refait la journée</div>
+  <div style="height:2px;width:120px;background:#c9a96e;margin:34px auto"></div>
+  <div style="font:400 27px/1.45 DM;color:#ecdcc4;margin:0 70px">Des outils simples pour déposer ta journée et t'endormir plus légère</div>
+  <div style="position:absolute;bottom:120px;left:0;right:0"><svg width="80" height="62" viewBox="-150 -115 300 230">${butterfly('#c9a96e')}</svg></div>
+  <div style="position:absolute;bottom:66px;left:0;right:0;font:italic 400 26px Lora;color:#c9a96e">H·R Écoute &amp; Accompagnement</div></div>`,
+`<div class="face pg"><h3>Ta météo intérieure</h3><div class="k">3 minutes, ce soir</div><div class="rule"></div>
+  <div class="lbl">Ce soir, dedans, il fait…</div>
+  <div class="wx"><div>${sun}</div><div>${cloud}</div><div>${rain}</div><div>${storm}</div></div>
+  <div class="lbl">Ce que je ressens, en un mot</div>${lines(2)}
+  <div class="lbl" style="margin-top:34px">Ce dont j'ai besoin, là</div>${lines(3)}
+  <div class="ft">H·R Écoute &amp; Accompagnement</div></div>`,
+`<div class="face pg"><h3>Mon journal du soir</h3><div class="k">je dépose ma journée</div><div class="rule"></div>
+  <div class="lbl">Aujourd'hui, ce qui m'a pesé</div>${lines(3)}
+  <div class="lbl" style="margin-top:34px">Ce que je laisse ici pour cette nuit</div>${lines(3)}
+  <div class="lbl" style="margin-top:34px">Une petite chose qui m'a fait du bien</div>${lines(2)}
+  <div class="ft">H·R Écoute &amp; Accompagnement</div></div>`,
+`<div class="face pg"><h3>Je vide ma tête</h3><div class="k">et je confie ce qui n'est pas à moi</div><div class="rule"></div>
+  <div class="cols"><div><h4>C'est à moi</h4>${chk(7)}</div><div><h4>Pas à moi</h4>${chk(7)}</div></div>
+  <div class="ft">H·R Écoute &amp; Accompagnement</div></div>`,
+`<div class="face pg"><h3>Les soirs difficiles</h3><div class="k">mon kit, à garder près du lit</div><div class="rule"></div>
+  <div class="sos"><div class="t">Ma carte SOS</div>
+   <div class="q">Quand ça déborde, je…</div>${lines(2)}
+   <div class="q">Une phrase qui me calme</div>${lines(2)}
+   <div class="q">La personne que je peux appeler</div>${lines(1)}</div>
+  <div class="ft">H·R Écoute &amp; Accompagnement</div></div>`,
+`<div class="face pg" style="text-align:center"><h3>Un mandala à colorier</h3><div class="k">pour les mains qui ne savent pas s'arrêter</div>${mandala()}
+  <div class="ft">H·R Écoute &amp; Accompagnement</div></div>`
+];
+const book=$('#book');
+const leaves=pages.map((html,i)=>{const d=document.createElement('div');d.className='leaf';d.style.zIndex=100-i;
+  d.innerHTML=html+'<div class="face back"></div><div class="shade"></div>';book.appendChild(d);return d});
+
+// --- chronologie ---
+const BIG=[
+ {a:0.0,b:2.4,lines:[['23 h.',0.0],['La maison dort.',0.45,'gold'],['Sauf ta tête.',1.25]]},
+ {a:2.4,b:5.0,lines:[['Tu n\'es pas trop sensible.',2.4],['Tu portes trop.',3.3,'gold'],['Depuis trop longtemps.',4.05]]},
+];
+const CAP=[
+ [5.0,7.6,'Alors j\'ai rassemblé ce que je donne <b>le plus souvent en séance</b>'],
+ [7.95,9.95,'Ta <b>météo intérieure</b>, en 3 minutes'],
+ [9.95,11.95,'Un <b>journal du soir</b> pour déposer ta journée'],
+ [11.95,13.3,'Un <b>planificateur</b> pour vider ta tête'],
+ [13.3,14.95,'Ta liste de choses à faire a sa propre liste ? <b>Elle a enfin sa page.</b>'],
+ [14.95,16.95,'Un <b>kit pour les soirs difficiles</b>, avec ta carte SOS'],
+ [16.95,19.0,'Et un <b>mandala</b>, pour les mains qui ne savent pas s\'arrêter'],
+ [19.0,21.6,'Des fiches à imprimer. <b>Je te l\'offre.</b>'],
+ [21.6,24.0,'Lien en bio : <b>« Mon guide offert »</b>'],
+ [24.0,26.6,'Et toi, ta tête s\'emballe à <b>quelle heure</b> ? 🌙'],
+];
+const FLIPS=[7.95,9.95,11.6,14.6,16.6]; // la feuille i se tourne à FLIPS[i]
+const REWIND=19.0;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const outBack=x=>{const c1=1.5,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+let lastBig=-1,lastCap=-1;
+
+window.render=function(t){
+  // gros texte d'accroche
+  const bi=BIG.findIndex(s=>t>=s.a&&t<s.b);
+  if(bi!==lastBig){$('#big').innerHTML=bi<0?'':BIG[bi].lines.map(l=>`<div class="${l[2]||''}">${l[0]}</div>`).join('');lastBig=bi}
+  if(bi>=0){const s=BIG[bi];[...$('#big').children].forEach((el,i)=>{const p=clamp((t-s.lines[i][1])/.35);const out=clamp((s.b-t)/.25);
+    el.style.opacity=p*out;el.style.transform=`translateY(${(1-outBack(p))*60}px) scale(${.9+.1*outBack(p)})`})}
+  // sous-titres
+  const ci=CAP.findIndex(c=>t>=c[0]&&t<c[1]);
+  const sp=$('#cap span');
+  if(ci!==lastCap){sp.innerHTML=ci<0?'':CAP[ci][2];lastCap=ci}
+  if(ci>=0){const p=clamp((t-CAP[ci][0])/.28),o=clamp((CAP[ci][1]-t)/.18);sp.style.opacity=ci<0?0:p*o;sp.style.transform=`scale(${.85+.15*outBack(p)})`}
+  else sp.style.opacity=0;
+  // livret : entrée, balancement, sortie
+  const inP=ease(clamp((t-4.9)/1.0)), outP=ease(clamp((t-26.3)/0.6));
+  const sway=Math.sin(t*1.6)*1.2, bob=Math.sin(t*2.1)*6;
+  $('#holder').style.transform=`translateY(${(1-inP)*1750+outP*1750+bob}px) rotate(${sway+(1-inP)*-6}deg)`;
+  // pages
+  leaves.forEach((lf,i)=>{
+    let p=clamp((t-FLIPS[i])/.7); p=ease(p);
+    if(t>=REWIND){const r=ease(clamp((t-REWIND-i*0.06)/.55));p=p*(1-r)}
+    lf.style.transform=`rotateY(${-178*p}deg)`;
+    lf.style.zIndex=p>.5?10+i:100-i;
+    lf.style.opacity=p<.75?1:clamp((1-p)/.25);
+    const next=leaves[i+1];
+    if(next)next.querySelector('.shade').style.opacity=(Math.sin(p*Math.PI)*.35).toFixed(3);
+  });
+  // tampon « Offert »
+  const sP=clamp((t-19.9)/.35), sO=1-clamp((t-26.2)/.3);
+  $('#stamp').style.opacity=sP*sO;$('#stamp').style.transform=`rotate(${-14}deg) scale(${sP?1.6-.6*outBack(sP):1.6})`;
+  // lumière de lampe qui respire
+  $('#glow').style.opacity=.75+.25*Math.sin(t*1.3);
+  // écran de fin
+  const e=clamp((t-26.6)/.6);$('#end').style.opacity=e;
+  $('#mark').style.opacity=1-e;
+  $('#bfly').style.transform=`scale(${.8+.2*outBack(clamp((t-26.8)/.6))}) scaleX(${1-.25*Math.abs(Math.sin(t*3))})`;
+};
+window.render(0);
+</script></body></html>
